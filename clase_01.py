@@ -23,5 +23,22 @@ print('False and False = ', False and False)
 
 
 
+print(9>7 and 6>4)
+
+
+print(9>7 or 6<4)
+
+
+role=input('Digitar el rol administrador o vendedor ')
+print(role=='administrador' or role=='vendedor')
+
+
+
+
+
+
+
+
+
 
 
