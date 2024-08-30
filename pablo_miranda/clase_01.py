@@ -10,6 +10,9 @@ print("V F ->", True or False)
 print("F V ->", False or True)
 print("F F ->", False or False)
 
+role = input('\n[administrador o vendedor] ingresar rol: ')
+print(role == 'administrador' or role == 'vendedor')
+
 
 
 
