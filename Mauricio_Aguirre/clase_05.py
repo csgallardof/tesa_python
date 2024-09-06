@@ -39,28 +39,35 @@ config = {"host": "localhost",
 print("Configuracion de mi primera aplicacion", config)
 
 ## Contador de palabras dentro de un Diccionario
-def contar_palabras(texto):
-# Convertimos el texto a minúsculas y dividimos en palabras
-  palabras = texto.lower().split()
-
+def contar_palabras_de_un_diccionario(diccionario):
   # Creamos una variable para el conteo y que nos muestre el total
   contador_palabras = {}
   total_palabras = 0
 
   # creamos el for para que realice el conteo
-  for palabra in palabras:
-    contador_palabras[palabra] = contador_palabras.get(palabra, 0) + 1
-    total_palabras += 1
-
+  for valor in diccionario.values():
+      # Verificamos si el valor es una lista o una cadena
+      if isinstance(valor, list):
+          # Si es una lista, iteramos sobre cada elemento (que asumimos es una cadena)
+          for palabra in valor:
+              contador_palabras[palabra] = contador_palabras.get(palabra, 0) + 1
+              total_palabras += 1
+      elif isinstance(valor, str):
+        # Si es una cadena, la dividimos en palabras          
+          for palabra in valor.split():
+                contador_palabras[palabra] = contador_palabras.get(palabra, 0) + 1
+                total_palabras += 1  
   # Agregamos el total de palabras al diccionario
   contador_palabras['total'] = total_palabras
 
   return contador_palabras
+### Ejecucion
+mi_diccionario = {
+    "usuario1": ["Hola", "Bienvenido", "Como", "Estas","es","un","placer","Conocerte"]
+}
 
-texto = "Este es un diccionario para poder validar cuantas palabras tiene"
-resultado = contar_palabras(texto)
+resultado = contar_palabras_de_un_diccionario(mi_diccionario)
 print(resultado)
-
 
 ## Mapeos de usuarios
 
