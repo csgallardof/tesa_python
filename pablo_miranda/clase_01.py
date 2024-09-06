@@ -1,3 +1,4 @@
+
 print("AND")
 print("V V ->", True and True)
 print("V F ->", True and False)
