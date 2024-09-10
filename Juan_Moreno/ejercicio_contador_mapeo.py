@@ -24,4 +24,10 @@ print(f"Total de palabras en el diccionario: {resultado}")
 
 # Mapeo de usuarios
 
-## Apenas entienda bien todo esto, completare este ejercicio faltante, una disculpa
+usuarios = ["usuario 1","usuario 2","usuario 3","usuario 4"]
+
+mapeo_usuarios = {i+1:usuario for i, usuario in enumerate(usuarios)}
+
+for id_usuario, nombre_usuario in mapeo_usuarios.items():
+    print(f"ID: {id_usuario}, Usuario: {nombre_usuario}")
+
