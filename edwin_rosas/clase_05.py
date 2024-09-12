@@ -63,7 +63,7 @@ for mapeousuario in lista_usuario:
     if mapeousuario in lista_nombre.keys():
         print("Nombre: ", lista_nombre[mapeousuario])
     else:
-        print("no existe")
+        print("no existe usuario")
 
 
 
