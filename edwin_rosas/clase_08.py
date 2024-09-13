@@ -49,18 +49,35 @@ def multiplicacion(a,b):
     return a*b
 
 def division(a,b):
-    if b==0:
-        return "Un numero no puede ser divisible en Cero"
-    return a/b
+    try:
+        return a/b
+    except ZeroDivisionError:
+        return "Un número no puede ser divisible en Cero"
+    
 
 
 #num1=15
 #num2=3
 
-num1= float(input("Ingrese un numero A: "))
-num2= float(input("Ingrese un numero B: "))
+num1= float(input("Ingrese un número A: "))
+num2= float(input("Ingrese un número B: "))
 
-print("La suma de", num1 ,"mas",num2,"es:",suma(num1,num2))
-print("La resta de", num1 ,"menos",num2,"es:",resta(num1,num2))
-print("La multiplicacion de", num1 ,"por",num2,"es:",multiplicacion(num1,num2))
-print("La division de", num1 ,"entre",num2,"es:",division(num1,num2))
+# Menú de operaciones
+print("\nSeleccione la operación:")
+print("1. Suma")
+print("2. Resta")
+print("3. Multiplicación")
+print("4. División")
+    
+opcion = input("Elija una opción (1/2/3/4): ")
+
+if opcion =="1":
+    print("La suma de", num1 ,"mas",num2,"es:",suma(num1,num2))
+elif opcion =="2":
+    print("La resta de", num1 ,"menos",num2,"es:",resta(num1,num2))
+elif opcion =="3":
+    print("La multiplicación de", num1 ,"por",num2,"es:",multiplicacion(num1,num2))
+elif opcion =="4":
+    print("La división de", num1 ,"entre",num2,"es:",division(num1,num2))
+else:
+    print("opción no valida")
