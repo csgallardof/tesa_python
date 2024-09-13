@@ -46,3 +46,7 @@ if not x>10:
    print("Se cumple la negacion de X, X es",x, " y Y es" ,y)
 else:
    print("no cumple la condición NOT")
+
+
+
+
