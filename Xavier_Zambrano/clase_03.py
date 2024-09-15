@@ -1,4 +1,7 @@
-to_do=["Busco lugar","buscar hotel", "Comunicar a la familiar", "viajar"]
+
+### Listas (Metodologiía To_do que se tiene que hacer ejemplo para un viaje)
+
+to_do=["Busco lugar","buscar hotel", "Comunicar a la familiar", "viajar"] 
 
 print (to_do)
 
