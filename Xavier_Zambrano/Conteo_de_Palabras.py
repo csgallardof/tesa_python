@@ -18,19 +18,3 @@ for items in informacion_personal.values():
     conteo += palabras
 
 print("Cantidad de palabras ingresadas son: ", conteo) 
-
-
-
-
-
-##nombre = "Juan"
-##print("Hola, !".format(nombre))
-##
-##nombre = "Juan"
-##print(f"Hola, {nombre}!")
-##
-##with open("salida.txt", "w") as archivo:
-##    archivo.write("Hola, mundo!")
-##
-##
-##
