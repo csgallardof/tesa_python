@@ -1,4 +1,6 @@
 
+##Condicionales con if
+
 #Club Privadoreestriccion de eddad y si es o no miembro
 
 is_miembro_club = False
