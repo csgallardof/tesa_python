@@ -1,19 +1,22 @@
-print("Configuracion de mi primera APP", config)
+#### Diccionarios (Estructuras de datos clave\valor)
 
-# contador de palabras dentro de un diccionario
+numeros = {1:"Uno",2:"dos",3:"tres"}
+print(numeros[3])
+      
+informacion_personal = {"Nombre": "Xavier","Teléfono": "0998872275", "email":"computerskx@gmail.com"} 
+print(informacion_personal["Nombre"])
 
-palabras = {"Saludo":"Hola Edwin"
-"Color":"Verde",
-"Pals":"Ecuador"
-"Marcr":"Volkswagen Escarbajo blanco"
-"Peso": "Kilos"}
+claves =informacion_personal.keys()  ## se puede acceder o extraer las claves con keys
+print(claves)
 
-cantidad_palabras = 0
+valores = informacion_personal.values() ## se puede acceder o extraer los valores con value
+print(valores)
 
-print(palabras.items())
-for clave, valordeclave in palabras.items():
-cuenta_palabras = len(valordeclave.split()) #len es el numero de elementos y split divide una cadena en una lista
-cantidad_palabras += cuenta_palabras #aqui se suma
+elementos = informacion_personal.items() ## se puede acceder o extraer las claves y valores con items
+print(elementos)
 
+##Configuracion de aplicacion
 
-print("Cantidad de palabras que tienen los valores del diccionario palabras:", cantidad_palabras)
+config = {"host": "LocalHost","Port":8080,"Title":"Mi Primera Aplicación"}
+
+print("Configuración de mi Primera Aplicación",config)
