@@ -29,5 +29,5 @@ os.rename('cuento_v2.txt', 'cuento_v3.txt')
 print('Archivo')
 
 
-txt_files = [f for f in os.listdir('.') if f.endswith('.txt')]
+txt_files = [f for f in os.listdir('/var/www/htl/') if f.endswith('.txt')]
 print("Archivos txt:", txt_files)
