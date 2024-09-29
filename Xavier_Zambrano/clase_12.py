@@ -20,5 +20,5 @@ print("Archivos txt: ",txt_files)
 os.rename('cuento.txt', 'cuento_v2.txt')
 print("Archivo Modificado")
 
-txt_files = [f for f in os.listdir('.') if f.endswith('txt')]
+txt_files = [f for f in os.listdir('.') if f.endswith('txt')]  #listdir se referie al directorio actual
 print("Archivos txt: ",txt_files)
