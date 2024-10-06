@@ -16,7 +16,7 @@ else:
 #else:
 #    print("Señor usuario usted no tiene acceso")
 
-print ("----------------------------------------")
+print ("----------AND----------------")
 
 x=30
 y=20

@@ -1,4 +1,3 @@
-
 ### funciones matematicas básicas
 
 import math ## para operaciones matematicas
