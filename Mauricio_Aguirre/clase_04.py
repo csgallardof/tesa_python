@@ -29,3 +29,6 @@ for fila in tablero_ajedrez:
 print(tablero_ajedrez[0][0])
 print(tablero_ajedrez[5][2])
 print(tablero_ajedrez[3][4])
+
+
+print("\n")
