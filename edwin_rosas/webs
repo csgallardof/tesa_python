@@ -1,0 +1,30 @@
+from  bs4 import BeautifulSoup
+import requests
+import time
+import webbrowser
+
+url = requests.get("https://ecuador.patiotuerca.com/vehicle/autos-kia-sportage_sl-cuenca-2019/1857467")
+
+soup = BeautifulSoup(url.content,"html.parser")
+
+resultado = soup.find("div",{"class","data-price"})
+
+print(resultado)
+
+precioActual_text = resultado.text
+print(precioActual_text)
+
+
+precioActual = float(precioActual_text)
+
+print(precioActual)
+
+
+precioDeseado = float(260)
+
+print(precioDeseado)
+
+if precioDeseado > precioActual:
+    print("Existe una oferta")
+else:
+    print("No existe ninguna oferta")
