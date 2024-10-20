@@ -1,90 +1,105 @@
 import requests
 from bs4 import BeautifulSoup
 import mysql.connector
-import datetime
-import logging
+from telegram import Bot
+import asyncio
 
-def extraer_y_almacenar_precio(url, precio_deseado):
-    """
-    Extrae el precio de un producto de una URL dada y lo almacena o actualiza en una base de datos MySQL.
+# Configuración del bot de Telegram
+TELEGRAM_TOKEN = "7995146553:AAFxEEfBeXv21Rl5e_KmIaUFU4LnR9Z2nJQ"
+CHAT_ID = '1563347266'
 
-    Args:
-        url (str): La URL del producto.
-        precio_deseado (float): El precio máximo deseado para el producto.
-    """
+# Función para enviar mensajes a Telegram
+async def send_message_to_telegram(message):
+    bot = Bot(token=TELEGRAM_TOKEN)
+    await bot.send_message(chat_id=CHAT_ID, text=message)
 
-    logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+# Función principal
+async def main():
+    # Enviar un mensaje de prueba a Telegram
+    await send_message_to_telegram("Mensaje de prueba desde Python")
 
-    try:
-        # Realizar la solicitud HTTP y obtener el contenido de la página
-        response = requests.get(url)
-        response.raise_for_status()
+    # Datos de conexión a MySQL (phpMyAdmin)
+    db_config = {
+        'user': 'root',        # Cambia esto si es necesario
+        'password': '',        # Añade tu contraseña aquí
+        'host': 'localhost',   # Cambia esto si es necesario
+        'database': 'examen_python',  # Asegúrate de que este nombre sea correcto
+    }
 
-        # Parsear el HTML utilizando BeautifulSoup
+    # URL de la página que deseas scrape
+    url = 'https://listado.mercadolibre.com.ec/celulares-y-telefonia/celulares-y-smartphones/xiaomi/celulares_NoIndex_True#applied_filter_id%3DBRAND%26applied_filter_name%3DMarca%26applied_filter_order%3D2%26applied_value_id%3D59387%26applied_value_name%3DXiaomi%26applied_value_order%3D3%26applied_value_results%3D234%26is_custom%3Dfalse'
+
+    # Hacer la solicitud a la página
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, como Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+
+    # Lista para almacenar los nombres y precios de los teléfonos
+    examen_python = []
+
+    # Comprobar si la solicitud fue exitosa
+    if response.status_code == 200:
+        # Parsear el contenido de la página
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Extraer los datos relevantes de la página
-        precio_element = soup.find("span", class_="andes-money-amount__fraction")
-        precio_texto = precio_element.text
-        precio_actual = float(precio_texto.replace(',', ''))
+        # Encontrar todos los elementos de productos
+        products = soup.find_all('div', class_='ui-search-result__wrapper')
+        for product in products:
+            # Obtener el nombre del teléfono desde el enlace
+            name_element = product.find('a')
+            name = name_element.text.strip() if name_element else 'No disponible'
 
-        nombre_producto = soup.find("h1", class_="ui-pdp-title")
-        if nombre_producto:
-            nombre_producto = nombre_producto.text.strip()
-        else:
-            nombre_producto = "No se encontró el nombre del producto"
+            # Obtener el precio del teléfono
+            price_element = product.find('span', class_='andes-money-amount__fraction')
+            cents_element = product.find('span', class_='andes-money-amount__cents')
 
-        # Conectar a la base de datos MySQL
-        mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="bd_examen_python"
-        )
-
-        mycursor = mydb.cursor()
-
-        # Verificar si el producto ya existe en la base de datos
-        mycursor.execute("SELECT * FROM productos WHERE url=%s", (url,))
-        existing_product = mycursor.fetchone()
-
-        if existing_product:
-            # Actualizar el registro existente si el precio es diferente
-            if existing_product[2] != precio_actual:
-                sql = "UPDATE productos SET precio=%s, fecha_extraccion=NOW() WHERE url=%s"
-                val = (precio_actual, url)
-                mycursor.execute(sql, val)
-                print("El precio del producto ha sido actualizado.")
+            if price_element:
+                price = f"{price_element.text.strip()}."
+                if cents_element:
+                    price += cents_element.text.strip()
+                price = f"US$ {price}"
             else:
-                print("El producto ya existe en la base de datos y el precio no ha cambiado.")
-        else:
-            # Insertar un nuevo registro
-            sql = "INSERT INTO productos (url, nombre, precio, fecha_extraccion) VALUES (%s, %s, %s, NOW())"
-            val = (url, nombre_producto, precio_actual)
-            mycursor.execute(sql, val)
-            print("El producto se ha agregado a la base de datos.")
+                price = 'No disponible'
 
-        mydb.commit()
-        mycursor.close()
-        mydb.close()
+            # Agregar el nombre y el precio a la lista
+            examen_python.append((name, price))  # Cambiar a tupla
 
-        if precio_actual <= precio_deseado:
-            print(f"El precio actual ({precio_actual}) es menor o igual al precio deseado. ¡Hay una oferta!")
-        else:
-            print("No se encontro producto con el precio solicitado")
-            print("Asi que no hay ofertas par mostrar")
+    # Conectar a la base de datos MySQL
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
 
-    except requests.exceptions.RequestException as e:
-        logging.error(f"Error en la solicitud HTTP: {e}")
-        print("Ocurrió un error al obtener la página web.")
-    except ValueError as e:
-        logging.error(f"Error al convertir el precio: {e}")
-        print("El precio no tiene un formato válido.")
-    except Exception as e:
-        logging.error(f"Error inesperado: {e}")
-        print("Ocurrió un error inesperado.")
+        # Crear una tabla si no existe
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS phones (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(255),
+                price VARCHAR(50)
+            )
+        ''')
 
-# Ejemplo de uso
-url = "https://www.mercadolibre.com.ec/infinix-note-40-pro-dual-sim-256-gb-dorado-8-gb-ram/p/MEC35611833?pdp_filters=category%3AMEC1055#polycard_client=search-nordic&searchVariation=MEC35611833&position=2&search_layout=stack&type=product&tracking_id=f046bdc0-c850-4970-9f1a-7df9c7e25dea&wid=MEC57422352&sid=search"
-precio_deseado = 520.0
-extraer_y_almacenar_precio(url, precio_deseado)
+        # Insertar los datos en la base de datos
+        cursor.executemany('''
+            INSERT INTO phones (name, price) VALUES (%s, %s)
+        ''', examen_python)
+        conn.commit()
+
+        # Cerrar la conexión a la base de datos
+        cursor.close()
+        conn.close()
+
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+    # Preparar el mensaje para Telegram
+    message = "\n".join([f"Nombre: {phone[0]}, Precio: {phone[1]}" for phone in examen_python])
+
+    # Enviar el mensaje a Telegram
+    await send_message_to_telegram(message)
+
+    # Imprimir en consola
+    print(message)
+
+# Ejecutar la función principal
+asyncio.run(main())
