@@ -1,7 +1,7 @@
 # Ejemplo de conexión con psycopg2
 import psycopg2
 
-# Datos de conexión (reemplaza con tus datos)
+# Datos de conexión
 conn = psycopg2.connect(
     database="mi_base_datos",
     user="mi_usuario",

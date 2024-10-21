@@ -23,3 +23,13 @@ print('Archivo')
 
 txt_files= [f for f in os.listdir('.') if f.endswith('.txt')]
 print ("archivos txt: ", txt_files)
+
+
+## Renombrar archivos
+
+os.rename("cuento.txt","cuento_v2.txt")
+print("archivo")
+
+
+txt_files = [f for f in os.listdir("/var/www/ht1/") if f.endswith(".txt")]
+print("Archivos txt", txt_files)

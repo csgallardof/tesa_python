@@ -4,7 +4,7 @@
 import pandas as pd
 import requests
 
-# URL de la API (ajusta la fecha según tus necesidades)
+
 url = "https://www.ncei.noaa.gov/access/services/data/v1?dataset=global-summary-of-the-month&startDate=1880-01-01&endDate=2023-12-31&dataTypes=sst&format=json"
 
 # Realizar la petición HTTP
