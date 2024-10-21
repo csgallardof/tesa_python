@@ -18,7 +18,7 @@ def cargar_csv(ruta_csv):
     return df
 
 def main():
-    ruta_csv = 'Prueba 1 Tesa.csv'  
+    ruta_csv = 'C:/Users/Reowo/tesa_python/Juan_Moreno/Prueba 1 Tesa.csv' 
     df = cargar_csv(ruta_csv)
 
    
